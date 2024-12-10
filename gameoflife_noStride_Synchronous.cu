@@ -85,6 +85,8 @@ __global__ void checkNoChangeKernel(int* d_current, int* d_next, int width, int 
 
 
 int main() {
+    
+    //cudaStream_t stream1; // for asynchronous file-wi
 
     // opening the outputfile to write to
     std::ofstream outPutFile;
@@ -116,7 +118,9 @@ int main() {
     printf("Enter Grid Height: ");
     scanf("%d", &HEIGHT);
 
-    printf("Starting Game of Life! \n");
+    clock_t beginTotal = clock();
+    
+    //printf("Starting Game of Life! \n");
     size_t size = WIDTH * HEIGHT * sizeof(int);
     int* h_current = (int*)malloc(size);
    
@@ -183,12 +187,12 @@ int main() {
         cudaMemcpy(&noChange, d_noChange, sizeof(int), cudaMemcpyDeviceToHost);
 
         if(allDead){
-            printf("Simulation stopped: All cells are dead at generation %d.\n", generation);
+            //printf("Simulation stopped: All cells are dead at generation %d.\n", generation);
             break;
         }
 
         if(noChange){
-            printf("Simulation stopped: No changes detected at generation %d.\n", generation);
+            //printf("Simulation stopped: No changes detected at generation %d.\n", generation);
             break;
         }
 
@@ -203,7 +207,7 @@ int main() {
 
     }
     if(generation = max_generations){
-        printf("simulation ended after %d generations \n",generation-1);
+        //printf("simulation ended after %d generations \n",generation);
     }
 
     cudaDeviceSynchronize();
@@ -212,6 +216,10 @@ int main() {
     cudaFree(d_next); 
     cudaFree(d_allDead);
     cudaFree(d_noChange);
+
+    clock_t endTotal = clock();
+    double timeTotal = (double) (endTotal-beginTotal) / CLOCKS_PER_SEC; //generation time
+    outPutFile<<"totalTime;"<<timeTotal<<std::endl;
 
     //close the files
     outPutFile.close();
