@@ -13,4 +13,4 @@ A multithreaded implementation of John Conway's Game of Life using NVIDIA's CUDA
 
 ### gameoflife_Stride_Asynchronous
 - This implementation uses asynchronous memory copy operations and such.
-- The kernels in this version implement striding, optimizing performance for larger grids and improving memory access patterns.
+- The kernels in this version implement striding, optimizing performance for larger grids.
